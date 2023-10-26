@@ -1,9 +1,29 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+# Vider la base
+Stroll.destroy_all
+Dogsitter.destroy_all
+Dog.destroy_all
+City.destroy_all
+
+# ---
+
+# Création de villes
+cities = ["Paris", "Lyon", "Marseille", "Toulouse", "Nice", "Nantes", "Strasbourg", "Montpellier", "Bordeaux", "Lille"]
+city_objects = cities.map do |city_name|
+  City.create(city_name: city_name)
+end
+
+# Création de promeneurs de chiens
+20.times do
+  Dogsitter.create(name: Faker::Name.unique.name, city: city_objects.sample)
+end
+
+# Création de chiens
+100.times do
+  Dog.create(name: Faker::Creature::Dog.name, breed: Faker::Creature::Dog.breed, city: city_objects.sample)
+end
+
+# Création de promenades
+Dog.all.each do |dog|
+  matching_dogsitters = Dogsitter.where(city: dog.city)
+  Stroll.create(date: Faker::Date.between(from: "2022-01-01", to: "2023-12-31"), time: Faker::Time.forward(days: 365, period: :day), dogsitter: matching_dogsitters.sample, dog: dog)
+end

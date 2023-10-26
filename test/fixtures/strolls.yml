@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date: 2023-10-26
+  time: 2023-10-26 23:53:00
+  dogsitter: one
+  dog: one
+
+two:
+  date: 2023-10-26
+  time: 2023-10-26 23:53:00
+  dogsitter: two
+  dog: two
